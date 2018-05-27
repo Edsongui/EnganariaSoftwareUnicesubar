@@ -12,12 +12,6 @@ Busca linear(Busca sequêncial):
 -Percorre o array e compara item a item ate encontrar o item buscado ou chegar ao ultimo elemento;
 -Em caso de duplicidade, retornará primeiro valor encontrado;
 
-Custo computacional:
--melhor caso = uma interação;
--pior caso = número de interações igual ao número de elementos;
--caso médio = metade do número de elementos;
--não encontrado = pior caso;
-
 Busca linear ordenada(Busca sequêncial indexada)
 -Dados ordenados;
 -A lista pode ser ordenada de forma crescente ou decrescente;
@@ -25,8 +19,10 @@ Busca linear ordenada(Busca sequêncial indexada)
 encontrar um valor maior(crescente) ou menor(decrescente) que o item buscado ou chegar ao ultimo elemento;
 -Em caso de duplicidade, retornará primeiro valor encontrado;
 
-Custo computacional:
--melhor caso = uma interação;
--pior caso = número de interações igual ao número de elementos;
--caso médio = metade do número de elementos;
--não encontrado = depende do tamanho do elemento procurado em comparação com os dados;
+Busca Binária
+-dados ordenados;
+-A lista pode ser ordenada de forma crescente ou decrescente;
+-encontra o meio do array e compara se é igual ao elemento buscado, 
+se não for  verificado se ele é maior(crescente) ou menor(decrescente) que o mesmo,
+descarta-se a outra metade do vetor e se busca o meio dessa metade ate se esgotarem os numeros;
+-Em caso de duplicidade, retornará primeiro valor encontrado(mais a esquerda(crescente) ou a direita(decrescente));
