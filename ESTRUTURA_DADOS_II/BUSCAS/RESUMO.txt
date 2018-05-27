@@ -1,0 +1,32 @@
+Busca é a recuperação de dados armazenados em repositórios ou bases de dados.
+
+Tipo de busca depende:
+-Tipo dos dados;
+-Dados estão estruturados ou não;
+-Dados estão ordenados;
+-Valores estão duplicados;
+
+
+Busca linear(Busca sequêncial):
+-Dados não ordenados ou ordenados;
+-Percorre o array e compara item a item ate encontrar o item buscado ou chegar ao ultimo elemento;
+-Em caso de duplicidade, retornará primeiro valor encontrado;
+
+Custo computacional:
+-melhor caso = uma interação;
+-pior caso = número de interações igual ao número de elementos;
+-caso médio = metade do número de elementos;
+-não encontrado = pior caso;
+
+Busca linear ordenada(Busca sequêncial indexada)
+-Dados ordenados;
+-A lista pode ser ordenada de forma crescente ou decrescente;
+-Percorre o array e compara item a item ate encontrar o item buscado, 
+encontrar um valor maior(crescente) ou menor(decrescente) que o item buscado ou chegar ao ultimo elemento;
+-Em caso de duplicidade, retornará primeiro valor encontrado;
+
+Custo computacional:
+-melhor caso = uma interação;
+-pior caso = número de interações igual ao número de elementos;
+-caso médio = metade do número de elementos;
+-não encontrado = depende do tamanho do elemento procurado em comparação com os dados;
