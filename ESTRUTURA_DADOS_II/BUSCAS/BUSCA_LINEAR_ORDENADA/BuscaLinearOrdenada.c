@@ -17,5 +17,29 @@ int buscaLinearOrdenada(int *vetor, int tamanhoVetor, int elementoBuscado) {
 }
 
 int main(int argc, char *argv[]) {
+	
+	int tamanhoVetor, i, elementoBuscado, retorno;
+	
+	printf("Informe o tamanho do vetor: ");
+	scanf("%d", &tamanhoVetor);
+	
+	int vetor[tamanhoVetor];
+	
+	for (i=0; i<tamanhoVetor; i++) {
+		printf("Informe o numero para posicao %d: ", i);
+		scanf("%d", &vetor[i]);
+		printf("\n");
+	}
+	
+	printf("Informe o numero para ser encontrado: ");
+	scanf("%d", &elementoBuscado);
+	printf("\n");
+	retorno = buscaLinearOrdenada(vetor, tamanhoVetor, elementoBuscado);
+	
+	if (retorno != -1) {
+		printf("Elemento encontrado na posicao %d", retorno);
+	} else {
+		printf("Elemento nao encontrado!");
+	}
 	return 0;
 }
