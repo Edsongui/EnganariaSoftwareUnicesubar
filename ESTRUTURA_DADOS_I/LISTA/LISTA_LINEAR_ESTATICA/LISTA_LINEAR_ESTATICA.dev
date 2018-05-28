@@ -1,6 +1,6 @@
 [Project]
-FileName=BUSCA_BINARIA.dev
-Name=BUSCA_BINARIA
+FileName=LISTA_LINEAR_ESTATICA.dev
+Name=LISTA_LINEAR_ESTATICA
 Type=1
 Ver=2
 ObjFiles=
@@ -51,7 +51,17 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=BuscaBinaria.c
+FileName=ListaLinearEstatica.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=ListaLinear.c
 CompileCpp=0
 Folder=
 Compile=1

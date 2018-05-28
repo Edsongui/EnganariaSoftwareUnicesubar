@@ -1,0 +1,29 @@
+Lista é uma sequência ordenada de elementos do mesmo tipo
+Estrutura internao abstraida, somente é possivel acesso as ao conteudo interno pelas funções fornecidas pela lista;
+
+Operações básicas:
+-criação da lista;
+-inserção de um elemento;
+-exclusão de um elemento;
+-acesso a um elemento;
+-destruição de um elemento;
+
+Lista estática:
+-o espaço de memória é alocado no momento da compilação;
+-exige a definição do número máximo de elementos da lista antes de criá-la;
+-acesso sequêncial: elementos consecutivos na memória;
+-para inserir ou remover elementos é necessário deslocar os elementos 
+posteriores da lista na memória;
+
+Quando utilizar lista estática?
+-lista pequenas;
+-inserção/remoção apenas no final da lista;
+-tamanho máximo bem definido;
+-busca é operação mais frequente;
+
+Lista dinâmica:
+-O espaço de memória é alocado em tempo de execução;
+-a lista cresce a medida que novos elementos são armazenados, 
+e diminui a medida que elementos são removidos;
+-acesso encadeado: cada elemento pode estar em uma área distinta da memória.
+Para acessar um elemento, é preciso percorrer todos os seus antecessores na lista.
