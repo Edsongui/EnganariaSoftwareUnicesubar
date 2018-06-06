@@ -4,7 +4,12 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 void insertionSort(int *vetor, int numeroElementos) {
-	int i, j, auxiliar;
+	int i, j, k, auxiliar;
+	printf("[");
+		for (k=0; k<numeroElementos; k++){
+			printf("%d, ", vetor[k]);
+		}
+		printf("] \n");
 	for (i=1; i<numeroElementos; i++){//sempre pega o elemento mais a esquerda e considera os anteriores ja totalmente ordenados
 		auxiliar = vetor[i];//guarda dado da posicao i
 		//compara o auxiliar com os elemetos anteriores(mais a esquerda) enquanto auxiliar for menor que o numero na posicao (j-1)
@@ -15,6 +20,15 @@ void insertionSort(int *vetor, int numeroElementos) {
 		//quando quebra o loop(auxiliar NAO é menor que a posicao anterior)
 		//inseri o auxilar no espaco criado
 		vetor[j] = auxiliar;
+		
+		printf("Iteracao: %d", i + 1);
+		printf("\n[");
+		for (k=0; k<numeroElementos; k++){
+			printf("%d, ", vetor[k]);
+		}
+		printf("] \n");
+		system("pause");
+	
 	}
 }
 
