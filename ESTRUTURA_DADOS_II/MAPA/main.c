@@ -1,149 +1,237 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+#include <ctype.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
-# define tamanho 100
-enum Bool{False, True};
-enum Lado{Esquerdo = 0, Direito = 1, Raiz = -1};
+enum Lado{Esquerdo, Direito, Raiz};
 
 struct No {
 	char dado;
-	int pai;
-	int esquerda;
-	int direita;
+	struct No *esquerdo;
+	struct No *direito;
 };
-struct No arvore[tamanho];
-int index = 0;	
-int opt = 0;
-char pai, no;
-enum Lado lado;
 
-int buscar(char dado){
-	int i;
-	if (index != 0){
-		for (i=0; i<index; i++){
-			if (arvore[i].dado == dado){
-				return i;
-			}
-		}
-	} else {
-		return 0;
+int isOperator(char dado){
+	switch (dado){
+		//*
+		case 42:
+			return 1;
+			break;
+		//+
+		case 43:
+			return 1;
+			break;
+		//-
+		case 45:
+			return 1;
+			break;
+		default:
+			return 0;
+			break;	
 	}
 }
 
-void inserir(int pai, char dado, enum Lado lado){
-	switch (lado){
-		case Esquerdo:
-			arvore[pai].esquerda = index;
-			arvore[index].dado = dado;
-			arvore[index].pai = pai;
-			arvore[index].esquerda = Raiz;
-			arvore[index].direita = Raiz;
-			index++;
-			break;
-		case Direito:
-			arvore[pai].direita = index;
-			arvore[index].dado = dado;
-			arvore[index].pai = pai;
-			arvore[index].esquerda = Raiz;
-			arvore[index].direita = Raiz;
-			index++;
-			break;
-		case Raiz:
-			arvore[index].dado = dado;
-			arvore[index].pai = Raiz;
-			arvore[index].esquerda = Raiz;
-			arvore[index].direita = Raiz;
-			index++;
-			break;
-	}
+void limpaTela(){
+	#ifdef _WIN32
+		system("cls");
+	#elif defined(unix) || defined(_unix_) || defined(_unix) || (defined(_APPLE_) && defined(_MACH_))
+		system("clear");
+	#else
+		#error "SO não suportado."
+	#endif
 }
 
-void menuMostrar(){
-	int i;
-	system("cls");
-	for (i=0; i<index; i++){
-		printf("| %c ", arvore[i].dado);
-	}
-	printf("\n1 - Inserir um NO na arvore");
-	printf("\n2 - Pesquisar um NO na arvore");
-	printf("\n3 - Executar arvore");
-	printf("\n0 - Sair...");
+void pause(){
+	#ifdef _WIN32
+		system("pause");
+	#elif defined(unix) || defined(_unix_) || defined(_unix) || (defined(_APPLE_) && defined(_MACH_))
+		getchar();
+		getchar();
+	#else
+		#error "SO não suportado."
+	#endif
 }
 
-int executarCalculo(int indexCalculo){
-	struct No noCalculo = arvore[indexCalculo];
-	int dadoEsquerdo = -1;
-	int dadoDireito = -1;
-	
-	if ((noCalculo.direita == Raiz) && (noCalculo.esquerda == Raiz)) {
-		printf("\nnoCalculo %c", noCalculo.dado);
-		return noCalculo.dado;
-	} else {
-		if (noCalculo.esquerda != Raiz){
-			dadoEsquerdo = executarCalculo(noCalculo.esquerda);
-		}
-		if (noCalculo.direita != Raiz){
-			dadoDireito = executarCalculo(noCalculo.direita);
-		}
-		
-		if (dadoEsquerdo > -1 && dadoDireito > -1) {
-			printf("\nnoDado %c", noCalculo.dado);
-			printf("\ndadoEsquerdo: %c", dadoEsquerdo);
-			printf("\ndadoDireito: %c", dadoDireito);
-			if (noCalculo.dado == "+"){
-				printf("\n+");
-				return ((int)dadoEsquerdo + (int)dadoDireito);
-			} else if (noCalculo.dado == "-"){
-				printf("\n-");
-				return ((int)dadoEsquerdo - (int)dadoDireito);
-			} else if (noCalculo.dado == "*") {
-				printf("\n*");
-				return ((int)dadoEsquerdo * (int)dadoDireito);
-			}
-		}
-		if (dadoEsquerdo > -1){
-			return dadoEsquerdo;
+struct No* localizarNo(struct No* raiz, char dado){
+	struct No *esquerdo = NULL;
+	struct No *direito = NULL;
+	if (raiz) {
+		if ((raiz->dado == dado) && (raiz->esquerdo == NULL || raiz->direito == NULL)){
+			return raiz;
 		} else {
-			return dadoDireito;
+			esquerdo = localizarNo(raiz->esquerdo, dado);
+			if (esquerdo){
+				return esquerdo;
+			}
+			direito = localizarNo(raiz->direito, dado);
+			if (direito){
+				return direito;
+			}
+		}
+	} 
+	return NULL;
+}
+
+char solicitarDado(){
+	char dado = 0;
+	do {
+		printf("\nInforme o dado para inserir no nó:");
+		scanf(" %c", &dado);
+		if ((!isdigit(dado) && (!isOperator(dado)))){
+			printf("\nDado Inválido, Informar somente dígitos[1,3,4,5,6,7,8,9] ou os peradores[+,-,*]");
+			pause();
+			limpaTela();
+			dado = 0;
+		}
+	} while (dado == 0);
+	
+	return dado;
+}
+
+char solicitarDadoPai(){
+	char dado = 0;
+	do {
+		printf("\nInforme o dado do nó pai:");
+		scanf(" %c", &dado);
+		if ((!isdigit(dado) && (!isOperator(dado)))){
+			printf("\nDado Inválido, Informar somente dígitos[1,3,4,5,6,7,8,9] ou os peradores[+,-,*]");
+			pause();
+			limpaTela();
+			dado = 0;
+		}
+	} while (dado == 0);
+	
+	return dado;
+}
+
+enum Lado solicitarLado(){
+	enum Lado lado;
+	int opcao = 0;
+	do {
+		printf("\nInforme o lado em que será inserido o nó:\n");
+		printf("1-Esquerdo.\n");
+		printf("2-Direito.\n");
+		scanf("%i", &opcao);
+		switch (opcao){
+			case 1:
+				lado = Esquerdo;
+				break;
+			case 2:
+				lado = Direito;
+				break;
+			default:
+				printf("Informação inválida, tente novamente.\n");
+				opcao = 0;
+		}
+	} while (opcao == 0);
+	
+	return lado;
+}
+
+int calcularArvore(struct No* raiz){
+	int esquerdo;
+	int direito;
+	
+	if (raiz){
+		if (isOperator(raiz->dado)){
+			esquerdo = calcularArvore(raiz->esquerdo);
+			direito = calcularArvore(raiz->direito);	
+				switch (raiz->dado){
+					case 42:
+						return esquerdo * direito;
+						break;
+					case 43:
+						return esquerdo + direito;
+						break;
+					case 45:
+						return esquerdo - direito;
+						break;
+					default:
+						return -1;
+						break;	
+				}
+		} else {
+			return (raiz->dado - '0');
 		}
 	}
+	return -1;
+}
+
+void liberaNo(struct No* no){
+	if (no == NULL){
+		return;
+	}
+	liberaNo(no->esquerdo);
+	liberaNo(no->direito);
+	free(no);
+	no = NULL;
 }
 
 int main(int argc, char *argv[]) {
-	int temp, resultado = 0;
+	
+	struct No *raiz = NULL, *no = NULL, *pai = NULL;
+	enum Lado lado = Esquerdo;
+	int opcao = 0, sair = 0, resultado;
+	char dadoPai;
+	
+	setlocale(LC_ALL, "Portuguese");
+	
 	do {
-		menuMostrar();
-		scanf("%d", &opt);
-		switch (opt){
+		printf("Selecione uma opção:\n");
+		printf("1-Inserir Nó.\n");
+		printf("2-Calcular Arvore.\n");
+		printf("0-Sair.\n");
+		scanf("%i",&opcao);
+		
+		switch (opcao) {
+			case 0:
+				sair = 1;
+				break;
 			case 1:
-				printf("\nDigite o valor do PAI: ");
-				scanf("%c",&pai);
-				scanf("%c",&pai);
-				printf("Digite o valor do NO: ");
-				scanf("%c",&no);
-				scanf("%c",&no);
-				printf("Digite o lado da subarvore (Esquerda=%d/Direita=%d/Raiz=%d): ", Esquerdo,Direito,Raiz);
-				scanf("%d",&lado);
-				temp = buscar(pai);
-				inserir(temp,no,lado);
+				if (!raiz){
+					raiz = (struct No*)malloc(sizeof(struct No));
+					raiz->dado = solicitarDado();
+					raiz->esquerdo = NULL;
+					raiz->direito = NULL;
+					printf("Nó raiz criado!\n");
+					pause();
+				} else {
+					dadoPai = solicitarDadoPai();
+					pai = localizarNo(raiz,dadoPai);
+					if (pai){
+						no = (struct No*)malloc(sizeof(struct No));
+						no->dado = solicitarDado();
+						no->esquerdo = NULL;
+						no->direito = NULL;
+	
+						lado = solicitarLado();
+						if (lado == Esquerdo){
+							pai->esquerdo = no;
+						} else if (lado == Direito) {
+							pai->direito = no;
+						}
+						printf("\nNó criado!\n");
+						pause();
+					} else {
+						printf("\nNó não encontrado, ou os dois galhos já estão preenchidos.\n");
+						pause();
+					}
+				}
+				limpaTela();
 				break;
 			case 2:
-				printf("\nDigite o valor do NO: ");
-				scanf("%c",&no);
-				temp = buscar(no);
-				printf("No %c\nFilho Esquerda: %c \nFilho Direita: %c\n\n", arvore[temp].dado,
-				arvore[arvore[temp].esquerda].dado,
-				arvore[arvore[temp].direita].dado);
-				system("pause"); 
-				break; 
-			case 3:
-				resultado = executarCalculo(0);
-				printf("\nResultado: %d", resultado);
-				system("pause"); 
+				resultado = calcularArvore(raiz);
+				printf("\nResultado: %i\n", resultado);
+				pause();
+				limpaTela();
+				break;
+			default:
+				sair = 0;
 				break;
 		}
-	} while (opt!=0);
-	system("pause");
+		
+	} while (sair == 0);
+	liberaNo(raiz);
 	return 0;
 }
