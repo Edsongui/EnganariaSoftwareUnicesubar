@@ -33,6 +33,7 @@ int empilhar(Pilha *pilha){
 		printf("Pilha está  cheia!");
 		return 0;
 	}
+	fflush(stdin);
 	printf("\nInforme o código do livro: ");
 	scanf("%d", &livro.codigo);
 	fflush(stdin);
@@ -42,7 +43,7 @@ int empilhar(Pilha *pilha){
 	printf("Informe o autor do livro: ");
 	fgets(livro.autor,max,stdin);
 	
-	pilha->livros[pilha->topo];
+	pilha->livros[pilha->topo] = livro;
 	pilha->topo++;
 	return 1;
 }
@@ -53,22 +54,25 @@ void desempilhar(Pilha *pilha){
 	
 	if (pilha == NULL){
 		printf("Pilha não foi criada!");
+		return;
+	}
+	if (pilha->topo == 0){
+		printf("Pilha está vazia!");
+		return;
 	}
 	livro = pilha->livros[pilha->topo-1];
 	printf("Desempilhando livro: ");
 	printf("\nCódigo: %d Título: %s Autor: %s", livro.codigo, livro.titulo, livro.autor);
-	for (i = 0; i < pilha->topo-1; i++){
-		pilha->livros[i] = pilha->livros[i+1];
-	}
 	pilha->topo--;
 }
 
 void imprimir(Pilha *pilha){
 	int i;
 	Livro livro;
-	printf("\nNúmero de livros na pilha: %d", pilha->topo);
+	printf("\nLivros: %d", pilha->topo);
+	printf("\n");
 	for (i = 0; i < pilha->topo; i++){
 		livro = pilha->livros[i];
-		printf("\nCódigo: %d Título: %s Autor: %s", livro.codigo, livro.titulo, livro.autor);
+		printf("Código: %i , Título: %s, Autor: %s", livro.codigo, livro.titulo, livro.autor);
 	}
 }
